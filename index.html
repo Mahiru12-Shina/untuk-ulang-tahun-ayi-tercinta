@@ -215,7 +215,7 @@
 
       .envelope-wrapper:hover {
         transform: scale(1.05) rotate(3deg);
-        box-shadow: 0 35px 70px rgba(255, 20, 147, 0.9),
+        box-shadow: 0 35px 70px rgba(255 20, 147, 0.9),
           inset 0 0 40px rgba(255, 255, 255, 0.5);
       }
 
@@ -950,12 +950,12 @@
   </head>
   <body class="text-gray-800">
     <!-- Background Music -->
-    <audio id="background-music" loop>
+    <audio id="background-music" loop preload="auto">
       <source src="bergema.mp3" type="audio/mpeg" />
     </audio>
 
     <!-- Voice Note -->
-    <audio id="voice-note" loop>
+    <audio id="voice-note" loop preload="auto">
       <source src="audio.mp3" type="audio/mpeg" />
     </audio>
 
@@ -978,7 +978,7 @@
       "
     >
       <div class="text-center text-pink-600">
-        <div class="text-7xl mb-4 cake floating">Cake</div>
+        <div class="text-7xl mb-4 cake floating">🎂</div>
         <h1 class="text-5xl md:text-6xl pacifico mb-3">Kejutan Spesial</h1>
         <p class="text-xl mb-8">Klik amplop untuk membuka cinta...</p>
         <div class="envelope-wrapper" id="envelope-wrapper">
@@ -996,12 +996,12 @@
           <div class="envelope-sparkle"></div>
           <div class="envelope-sparkle"></div>
           <div class="envelope-sparkle"></div>
-          <div class="envelope-heart">💖</div>
-          <div class="envelope-heart">💖</div>
-          <div class="envelope-heart">💞</div>
-          <div class="envelope-heart">💖</div>
-          <div class="envelope-heart">💖</div>
-          <div class="envelope-heart">💖</div>
+          <div class="envelope-heart">❤️</div>
+          <div class="envelope-heart">❤️</div>
+          <div class="envelope-heart">❤️</div>
+          <div class="envelope-heart">❤️</div>
+          <div class="envelope-heart">❤️</div>
+          <div class="envelope-heart">❤️</div>
           <div class="hearts">
             <div class="heart-float h1"></div>
             <div class="heart-float h2"></div>
@@ -1213,7 +1213,7 @@
         </div>
       </section>
 
-      <!-- Music Player (1 Tombol Toggle) -->
+      <!-- Music Player -->
       <section class="py-16 px-4 bg-gradient-to-r from-yellow-100 to-pink-100">
         <div class="max-w-md mx-auto">
           <div
@@ -1237,7 +1237,7 @@
         </div>
       </section>
 
-      <!-- Voice Note (1 Tombol Toggle) -->
+      <!-- Voice Note -->
       <section
         class="py-16 px-4 bg-gradient-to-r from-purple-100 to-yellow-100"
       >
@@ -1246,7 +1246,7 @@
             class="bg-white bg-opacity-80 backdrop-blur-lg rounded-3xl p-8 shadow-xl reveal"
           >
             <h3 class="text-3xl pacifico text-pink-600 text-center mb-6">
-              Ucapan dari ejaa untuk ayii sayang..💖
+              Ucapan dari ejaa untuk ayii sayang..❤️
             </h3>
             <div class="flex justify-center mb-4">
               <button
@@ -1257,7 +1257,7 @@
               </button>
             </div>
             <p class="text-center text-purple-600 italic">
-              "Ucapan selamat ulang tahun dari pacar kamuu..💖"
+              "Ucapan selamat ulang tahun dari pacar kamuu..❤️"
             </p>
           </div>
         </div>
@@ -1280,19 +1280,19 @@
           class="footer-heart"
           style="left: 20%; top: 10%; animation-delay: 0s"
         >
-          💖
+          ❤️
         </div>
         <div
           class="footer-heart"
           style="left: 50%; bottom: 20%; animation-delay: 1s"
         >
-          💖
+          ❤️
         </div>
         <div
           class="footer-heart"
           style="right: 20%; top: 30%; animation-delay: 2s"
         >
-          💖
+          ❤️
         </div>
         <div
           class="footer-sparkle"
@@ -1317,7 +1317,7 @@
           ><i class="fas fa-heart"></i>
         </div>
         <p class="text-sm mt-4 relative z-10">
-          Dibuat dengan Heart oleh ayza | 2025
+          Dibuat dengan ❤️ oleh ayza | 2025
         </p>
       </footer>
     </div>
@@ -1421,14 +1421,22 @@
 
       // Volume Control
       const MUSIC_VOLUME_NORMAL = 0.6;
-      const MUSIC_VOLUME_LOW = 0.3;
+      const MUSIC_VOLUME_LOW = 0.2; // Volume lebih rendah saat voice note diputar
+      let isVoicePlaying = false;
+
       music.volume = MUSIC_VOLUME_NORMAL;
+      voiceNote.volume = 1.0;
 
       function lowerMusicVolume() {
-        music.volume = MUSIC_VOLUME_LOW;
+        if (!music.paused) {
+          music.volume = MUSIC_VOLUME_LOW;
+        }
       }
+
       function restoreMusicVolume() {
-        music.volume = MUSIC_VOLUME_NORMAL;
+        if (!music.paused) {
+          music.volume = MUSIC_VOLUME_NORMAL;
+        }
       }
 
       // Show Page
@@ -1442,12 +1450,11 @@
         setInterval(() => {
           const heart = document.createElement("div");
           heart.classList.add("falling-heart");
-          heart.innerHTML = "💖"; // Menggunakan emoji 💖
+          heart.innerHTML = "❤️";
           heart.style.left = Math.random() * 100 + "vw";
           heart.style.animationDuration = Math.random() * 4 + 5 + "s";
           heart.style.fontSize = Math.random() * 15 + 18 + "px";
           heart.style.opacity = Math.random() * 0.5 + 0.5;
-          heart.style.zIndex = 1;
           fallingHearts.appendChild(heart);
           setTimeout(() => heart.remove(), 9000);
         }, 300);
@@ -1502,7 +1509,7 @@
           setTimeout(() => {
             opening.style.display = "none";
             showPage("main-page");
-            music.play();
+            music.play().catch(() => {});
           }, 1500);
         }, 2200);
       });
@@ -1510,9 +1517,15 @@
       // TOGGLE MUSIC BUTTON
       toggleMusicBtn.addEventListener("click", () => {
         if (music.paused) {
-          music.play();
-          musicIcon.classList.remove("fa-play");
-          musicIcon.classList.add("fa-pause");
+          music
+            .play()
+            .then(() => {
+              musicIcon.classList.remove("fa-play");
+              musicIcon.classList.add("fa-pause");
+            })
+            .catch(() => {
+              alert("Musik gagal diputar. Pastikan file 'bergema.mp3' ada.");
+            });
         } else {
           music.pause();
           musicIcon.classList.remove("fa-pause");
@@ -1525,22 +1538,47 @@
         musicIcon.classList.add("fa-play");
       });
 
-      // TOGGLE VOICE NOTE BUTTON
+      // TOGGLE VOICE NOTE BUTTON (DIPERBAIKI)
       toggleVoiceBtn.addEventListener("click", () => {
         if (voiceNote.paused) {
-          voiceNote.play();
-          voiceIcon.classList.remove("fa-play");
-          voiceIcon.classList.add("fa-pause");
-          lowerMusicVolume();
+          voiceNote
+            .play()
+            .then(() => {
+              voiceIcon.classList.remove("fa-play");
+              voiceIcon.classList.add("fa-pause");
+              lowerMusicVolume(); // Hanya menurunkan volume, tidak mematikan musik
+              isVoicePlaying = true;
+            })
+            .catch((err) => {
+              console.error("Gagal memutar voice note:", err);
+              alert(
+                "File 'audio.mp3' tidak ditemukan atau rusak!\n\nPastikan file ada di folder yang sama."
+              );
+              voiceIcon.classList.remove("fa-pause");
+              voiceIcon.classList.add("fa-play");
+            });
         } else {
           voiceNote.pause();
           voiceIcon.classList.remove("fa-pause");
           voiceIcon.classList.add("fa-play");
-          restoreMusicVolume();
+          restoreMusicVolume(); // Mengembalikan volume musik ke normal
+          isVoicePlaying = false;
         }
       });
 
+      // Pastikan volume kembali saat voice note selesai
       voiceNote.addEventListener("ended", () => {
+        voiceIcon.classList.remove("fa-pause");
+        voiceIcon.classList.add("fa-play");
+        restoreMusicVolume(); // Mengembalikan volume musik ke normal
+        isVoicePlaying = false;
+      });
+
+      // Error handling untuk voice note
+      voiceNote.addEventListener("error", () => {
+        alert(
+          "File 'audio.mp3' tidak ditemukan!\n\nLetakkan di folder yang sama dengan HTML."
+        );
         voiceIcon.classList.remove("fa-pause");
         voiceIcon.classList.add("fa-play");
         restoreMusicVolume();
@@ -1560,17 +1598,17 @@
           const card = document.createElement("div");
           card.className = "flip-card reveal";
           card.innerHTML = `
-            <div class="flip-card-inner">
-              <div class="flip-card-front bg-gradient-to-br ${item.color}">
-                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
-              </div>
-              <div class="flip-card-back">
-                <h3 class="text-2xl font-bold text-pink-600 mb-2">${item.title}</h3>
-                <p class="text-gray-600 mb-3">${item.desc}</p>
-                <span class="inline-block bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm">${item.date}</span>
-              </div>
-            </div>
-          `;
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-br ${item.color}">
+                            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flip-card-back">
+                            <h3 class="text-2xl font-bold text-pink-600 mb-2">${item.title}</h3>
+                            <p class="text-gray-600 mb-3">${item.desc}</p>
+                            <span class="inline-block bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm">${item.date}</span>
+                        </div>
+                    </div>
+                `;
           setTimeout(() => card.classList.add("active"), i * 150);
           albumGrid.appendChild(card);
         });
